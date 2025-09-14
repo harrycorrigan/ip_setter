@@ -16,7 +16,7 @@ try:
     API_BASE_RETRY_DELAY = int(os.environ["API_BASE_RETRY_DELAY"])
     API_POLL_RATE_SECONDS = int(os.environ["API_POLL_RATE_SECONDS"])
     IP_FILE = os.environ["IP_FILE_PATH"]
-    DEBUG = bool(os.environ.get("DEBUG", 0))
+    DEBUG = bool(int(os.environ.get("DEBUG", 0)))
 except (KeyError, ValueError):
     print(
         "ERROR: Invalid .env (%s) configuration, please adjust & try again"

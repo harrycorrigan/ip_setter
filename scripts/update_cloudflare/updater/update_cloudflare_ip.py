@@ -10,20 +10,25 @@ def update(
     cf_zone_id: str,
     ignore_names: list[str] = [],
 ):
-    for record in cloudflare.get_dns_records(cf_email, cf_global_key, cf_zone_id):
-        if record["type"] != "A":
-            continue
-        if record["content"] == new_ip:
-            continue
+    try:
+        for record in cloudflare.get_dns_records(cf_email, cf_global_key, cf_zone_id):
+            if record["type"] != "A":
+                continue
+            if record["content"] == new_ip:
+                continue
+            if record["name"] in ignore_names:
+                continue
 
-        print(
-            "SCRIPT NOTICE (CLOUDFLARE_UPDATER): Updating DNS Record, name %s, curr value %s, new value %s"
-            % (record["name"], record["content"], new_ip)
-        )
+            print(
+                "SCRIPT NOTICE (CLOUDFLARE_UPDATER): Updating DNS Record, name %s, curr value %s, new value %s"
+                % (record["name"], record["content"], new_ip)
+            )
 
-        cloudflare.set_dns_record_value(
-            cf_email, cf_global_key, cf_zone_id, record["id"], new_ip
-        )
+            cloudflare.set_dns_record_value(
+                cf_email, cf_global_key, cf_zone_id, record["id"], new_ip
+            )
+    except TypeError:
+        print("SCRIPT ERROR (CLOUDFLARE_UPDATER): Failed to get DNS records. Are your credentials correct?")
 
 
 def entry(old_ip: str, new_ip: str):

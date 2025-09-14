@@ -1,7 +1,7 @@
 # Cloudflare Updater Script
 
 This is a basic script that on ``scripts/update_cloudflare/entry.py::entry(new_ip, old_ip)`` being called updates
-all DNS records (outside of IGNORE_DNS_RECORD_NAMES environment variable) for a particular cloudflare domain. 
+all A records (outside of IGNORE_DNS_RECORD_NAMES environment variable) for a particular cloudflare domain. 
 
 This is useful for self-hosted domains and services that may be running on a network with a dynamic IP address. 
 
