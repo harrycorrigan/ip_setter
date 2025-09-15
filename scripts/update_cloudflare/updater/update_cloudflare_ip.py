@@ -5,13 +5,12 @@ from . import cloudflare_utils as cloudflare
 
 def update(
     new_ip: str,
-    cf_email: str,
-    cf_global_key: str,
+    cf_bearer_token: str,
     cf_zone_id: str,
     ignore_names: list[str] = [],
 ):
     try:
-        for record in cloudflare.get_dns_records(cf_email, cf_global_key, cf_zone_id):
+        for record in cloudflare.get_dns_records(cf_bearer_token, cf_zone_id):
             if record["type"] != "A":
                 continue
             if record["content"] == new_ip:
@@ -25,10 +24,12 @@ def update(
             )
 
             cloudflare.set_dns_record_value(
-                cf_email, cf_global_key, cf_zone_id, record["id"], new_ip
+                cf_bearer_token, cf_zone_id, record["id"], new_ip
             )
-    except TypeError:
-        print("SCRIPT ERROR (CLOUDFLARE_UPDATER): Failed to get DNS records. Are your credentials correct?")
+    except (TypeError, KeyError):
+        print(
+            "SCRIPT ERROR (CLOUDFLARE_UPDATER): Failed to get DNS records. Are your credentials correct?"
+        )
 
 
 def entry(old_ip: str, new_ip: str):
@@ -37,8 +38,7 @@ def entry(old_ip: str, new_ip: str):
 
     dotenv.load_dotenv(dotenv_path)
     try:
-        CF_EMAIL = os.environ["CF_EMAIL"]
-        CF_GLOBAL_KEY = os.environ["CF_GLOBAL_KEY"]
+        CF_BEARER_TOKEN = os.environ["CF_BEARER_TOKEN"]
         CF_ZONE_ID = os.environ["CF_ZONE_ID"]
         IGNORED_RECORDS = os.environ.get("IGNORE_DNS_RECORD_NAMES", "").split(",")
     except KeyError:
@@ -48,4 +48,4 @@ def entry(old_ip: str, new_ip: str):
         )
 
         return
-    update(new_ip, CF_EMAIL, CF_GLOBAL_KEY, CF_ZONE_ID, ignore_names=IGNORED_RECORDS)
+    update(new_ip, CF_BEARER_TOKEN, CF_ZONE_ID, ignore_names=IGNORED_RECORDS)

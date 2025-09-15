@@ -9,7 +9,7 @@ This is useful for self-hosted domains and services that may be running on a net
 ## Usage
 
 The script usage is fairly simple, it's called via ``scripts/execute_scripts.py`` which in turn is called by ``main.py`` when a IP address change is detected, all you need is the relevant information from cloudflare stored in a dotenv file.
-There is a template dotenv available (``scripts/update_cloudflare/.env``), just fill in your credentials and zone id.
+There is a template dotenv available (``scripts/update_cloudflare/.env``), just fill in your credentials and zone id. Note that your bearer token needs DNS R/W permissions for the zone you specify.
 
 
-For more information on generating the tokens see cloudflare's own documentation (https://developers.cloudflare.com/fundamentals/account/find-account-and-zone-ids/)
+For more information on generating the tokens see cloudflare's own documentation (https://developers.cloudflare.com/fundamentals/account/find-account-and-zone-ids/ and https://developers.cloudflare.com/fundamentals/api/get-started/create-token/).
