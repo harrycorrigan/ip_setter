@@ -1,0 +1,10 @@
+[Unit]
+Description=IP Setter service, for executing scripts when dynamic IP changes
+
+[Service]
+Type=notify
+WorkingDirectory=/path/to/repo
+ExecStart=/usr/bin/python3 <path/to/repo>/main.py
+
+[Install]
+WantedBy=multi-user.target
