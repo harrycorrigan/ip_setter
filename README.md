@@ -10,3 +10,12 @@ The usage of this script should hopefully be fairly simple, you can populate the
 
 ## Scripts
 As previously mentioned there is currently only one script, for updating cloudflare DNS records. Docs for that are [here](scripts/update_cloudflare/README.md)
+
+## Running as systemd service
+
+To run this script as a systemd service, open the ip-setter.service file and replace ``<repo path>`` on lines 7 & 8 with the path of the repo on your server. Then copy this into systemd directory with the command
+```sh
+cp ./ip-setter.service /etc/systemd/system/
+``` 
+
+Then you can start/enable the service as you would any other.
